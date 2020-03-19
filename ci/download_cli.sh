@@ -41,5 +41,5 @@ then
     curl -LJO $cli_dist
     mkdir ./appsody-install
     tar zxvf "$cli_deb" --directory ./appsody-install
-    mv ./appsody-install/appsody /usr/local/bin
+    sudo mv ./appsody-install/appsody /usr/local/bin
 fi
