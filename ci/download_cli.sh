@@ -39,7 +39,7 @@ then
     echo " cli_dist=${cli_dist}"
 
     curl -L -s -o "$cli_dir/$cli_deb" "$cli_dist"
-    mkdir appsody-install
+    mkdir ./appsody-install
     tar zxvf "$cli_deb" --directory ./appsody-install
     mv ./appsody-install/appsody /usr/local/bin
 fi
