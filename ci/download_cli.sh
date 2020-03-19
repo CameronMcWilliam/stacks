@@ -31,7 +31,7 @@ then
         release_tag=${APPSODY_CLI_FALLBACK}
     fi
 
-    cli_deb="appsody_${release_tag}_amd64.deb"
+    cli_deb="appsody-${release_tag}-linux-${TRAVIS_CPU_ARCH}.tar.gz"
     cli_dist=${APPSODY_CLI_DOWNLOAD_URL}/${release_tag}/${cli_deb}
 
     echo " release_tag=${release_tag}"
@@ -39,5 +39,7 @@ then
     echo " cli_dist=${cli_dist}"
 
     curl -L -s -o "$cli_dir/$cli_deb" "$cli_dist"
-    sudo dpkg -i $cli_dir/$cli_deb
+    mkdir appsody-install
+    tar zxvf "$cli_deb" --directory ./appsody-install
+    mv ./appsody-install/appsody /usr/local/bin
 fi
