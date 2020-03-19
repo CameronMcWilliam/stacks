@@ -4,7 +4,7 @@ go:
   - 1.12.x
 
 env:
-  - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:0.1.1
+  - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:latest
 
 os: linux
 dist: bionic
