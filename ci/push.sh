@@ -1,3 +1,4 @@
+#!/bin/bash
 image_registry_login
 
 if [ -f $build_dir/image_list ]
@@ -6,7 +7,7 @@ then
     do
         if [ "$line" != "" ]
         then
-            declare newImage = "{$line}-{$TRAVIS_CPU_ARCH}"
+            newImage="{$line}-{$TRAVIS_CPU_ARCH}"
             image_tag $line $newImage
             image_push $newImage
         fi
