@@ -7,7 +7,7 @@ then
     do
         if [ "$line" != "" ]
         then
-            newImage="{$line}-{$TRAVIS_CPU_ARCH}"
+            newImage="$line-$TRAVIS_CPU_ARCH"
             image_tag $line $newImage
             image_push $newImage
         fi
