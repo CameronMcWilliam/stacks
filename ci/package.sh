@@ -70,9 +70,9 @@ do
                     if logged ${build_dir}/package.$stack_id.$stack_version.log \
                         appsody stack package \
                         --image-registry $IMAGE_REGISTRY \
-                        --image-namespace $IMAGE_REGISTRY_ORG
+                        --image-namespace $TESTING_REGISTRY_ORG
                     then
-                        echo "appsody stack package: ok, $IMAGE_REGISTRY_ORG/$stack_id:$stack_version"
+                        echo "appsody stack package: ok, $TESTING_REGISTRY_ORG/$stack_id:$stack_version"
                         trace "${build_dir}/package.$stack_id.$stack_version.log"
 
                         if [ "$SKIP_TESTS" != "true" ]
@@ -83,7 +83,7 @@ do
                                 appsody stack validate \
                                 --no-lint --no-package \
                                 --image-registry $IMAGE_REGISTRY \
-                                --image-namespace $IMAGE_REGISTRY_ORG
+                                --image-namespace $TESTING_REGISTRY_ORG
                             then
                                 echo "appsody stack validate: ok"
                                 trace "${build_dir}/validate.$stack_id.$stack_version.log"
@@ -99,12 +99,12 @@ do
                         exit 1
                     fi
 
-                    echo "$IMAGE_REGISTRY/$IMAGE_REGISTRY_ORG/$stack_id" >> $build_dir/image_list
-                    echo "$IMAGE_REGISTRY/$IMAGE_REGISTRY_ORG/$stack_id:$stack_version" >> $build_dir/image_list
-                    echo "$IMAGE_REGISTRY/$IMAGE_REGISTRY_ORG/$stack_id:$stack_version_major" >> $build_dir/image_list
-                    echo "$IMAGE_REGISTRY/$IMAGE_REGISTRY_ORG/$stack_id:$stack_version_major.$stack_version_minor" >> $build_dir/image_list
+                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id" >> $build_dir/image_list
+                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version" >> $build_dir/image_list
+                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version_major" >> $build_dir/image_list
+                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version_major.$stack_version_minor" >> $build_dir/image_list
 
-                    docker image tag "$IMAGE_REGISTRY/$IMAGE_REGISTRY_ORG/$stack_id:latest" "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:latest"
+                    docker image tag "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:latest" "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:latest"
 
                     echo -e "\n- ADD $repo_name with release URL prefix $RELEASE_URL/$stack_id-v$stack_version/$repo_name."
                     if appsody stack add-to-repo $repo_name \
@@ -199,7 +199,7 @@ if [ "$CODEWIND_INDEX" == "true" ]; then
 fi
 
 # create appsody-index from contents of assets directory after post-processing
-echo -e "\n- BUILDING: $IMAGE_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION}, log: ${build_dir}/image.$INDEX_IMAGE.${INDEX_VERSION}.log"
+echo -e "\n- BUILDING: $TESTING_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION}, log: ${build_dir}/image.$INDEX_IMAGE.${INDEX_VERSION}.log"
 
 nginx_arg=
 if [ -n "$NGINX_IMAGE" ]
@@ -207,19 +207,21 @@ then
     nginx_arg="--build-arg NGINX_IMAGE=$NGINX_IMAGE"
 fi
 
-echo "BUILDING: $IMAGE_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION}" > ${build_dir}/image.$INDEX_IMAGE.${INDEX_VERSION}.log
+echo "BUILDING: $TESTING_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION}" > ${build_dir}/image.$INDEX_IMAGE.${INDEX_VERSION}.log
 if image_build ${build_dir}/image.$INDEX_IMAGE.${INDEX_VERSION}.log \
     $nginx_arg \
-    -t $IMAGE_REGISTRY/$IMAGE_REGISTRY_ORG/$INDEX_IMAGE \
-    -t $IMAGE_REGISTRY/$IMAGE_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION} \
+    -t $IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$INDEX_IMAGE \
+    -t $IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION} \
     -f $script_dir/nginx/Dockerfile $script_dir
 then
-    echo "$IMAGE_REGISTRY/$IMAGE_REGISTRY_ORG/$INDEX_IMAGE" >> $build_dir/image_list
-    echo "$IMAGE_REGISTRY/$IMAGE_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION}" >> $build_dir/image_list
-    echo "created $IMAGE_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION}"
+    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$INDEX_IMAGE" >> $build_dir/image_list
+    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION}" >> $build_dir/image_list
+    echo "created $TESTING_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION}"
     trace "${build_dir}/image.$INDEX_IMAGE.${INDEX_VERSION}.log"
 else
     stderr "${build_dir}/image.$INDEX_IMAGE.${INDEX_VERSION}.log"
-    stderr "failed building $IMAGE_REGISTRY/$IMAGE_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION}"
+    stderr "failed building $IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$INDEX_IMAGE:${INDEX_VERSION}"
     exit 1
 fi
+
+. $script_dir/push.sh
