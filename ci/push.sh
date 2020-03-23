@@ -9,7 +9,6 @@ then
         then
             newImage="$line-$TRAVIS_CPU_ARCH"
             image_tag $line $newImage
-            docker rmi $line
             image_push $newImage
         fi
     done < $build_dir/image_list
