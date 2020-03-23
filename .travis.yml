@@ -13,14 +13,6 @@ stages:
 services:
   - docker
 
-# note before_deploy will run before each deploy provider
-before_deploy:
-  - . ./ci/git_setup.sh
-  - . ./ci/download_ci.sh
-  - . ./ci/build.sh
-  - . ./ci/push.sh
-  - . ./ci/release.sh
-
 
 jobs:
   include:
@@ -28,28 +20,31 @@ jobs:
       os: linux
       arch: amd64
       dist: bionic
+      install: . ./ci/git_setup.sh
+      before_script: ./ci/download_cli.sh
       script: 
-        - . ./ci/git_setup.sh
-        - . ./ci/download_ci.sh
         - . ./ci/build.sh
-        - . ./ci/push.sh
       on:
         tags: false
     - stage: build
       os: linux
       arch: ppc64le
       dist: bionic
+      install: . ./ci/git_setup.sh
+      before_script: ./ci/download_cli.sh
       script: 
-        - . ./ci/git_setup.sh
-        - . ./ci/download_ci.sh
         - . ./ci/build.sh
-        - . ./ci/push.sh
     - stage: deploy
       env:
         - DOCKER_EXPERIMENTAL_CLI=enabled
       os: linux
       arch: amd64
       dist: bionic
+      install: . ./ci/git_setup.sh
+      before_script: ./ci/download_cli.sh
+      script: 
+        - . ./ci/build.sh
+        - . ./ci/release.sh
       provider: releases
       skip_cleanup: true
       api_key: $GITHUB_TOKEN
