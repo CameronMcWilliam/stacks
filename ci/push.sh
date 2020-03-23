@@ -5,7 +5,7 @@ if [ -f $build_dir/image_list ]
 then
     while read line
     do
-        if [ "$line" != "" ]
+        if [ "$line" != "" ] && ["$line" != *"index"*]
         then
             newImage="$line-$TRAVIS_CPU_ARCH"
             image_tag $line $newImage
