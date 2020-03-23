@@ -1,6 +1,6 @@
 #!/bin/bash
-image_registry_login
 export IMAGE_REGISTRY_PUBLISH=true
+image_registry_login
 if [ -f $build_dir/image_list ]
 then
     while read line
