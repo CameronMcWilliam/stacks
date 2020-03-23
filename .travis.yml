@@ -15,10 +15,10 @@ services:
 
 # note before_deploy will run before each deploy provider
 before_deploy:
-  - ./ci/git_setup.sh
-  - ./ci/download_ci.sh
-  - ./ci/build.sh
-  - ./ci/push.sh
+  - . ./ci/git_setup.sh
+  - . ./ci/download_ci.sh
+  - . ./ci/build.sh
+  - . ./ci/push.sh
   - . ./ci/release.sh
 
 
@@ -30,9 +30,9 @@ jobs:
       dist: bionic
       script: 
         - . ./ci/git_setup.sh
-        - ./ci/download_ci.sh
-        - ./ci/build.sh
-        - ./ci/push.sh
+        - . ./ci/download_ci.sh
+        - . ./ci/build.sh
+        - . ./ci/push.sh
       on:
         tags: false
     - stage: build
@@ -40,10 +40,10 @@ jobs:
       arch: ppc64le
       dist: bionic
       script: 
-        - ./ci/git_setup.sh
-        - ./ci/download_ci.sh
-        - ./ci/build.sh
-        - ./ci/push.sh
+        - . ./ci/git_setup.sh
+        - . ./ci/download_ci.sh
+        - . ./ci/build.sh
+        - . ./ci/push.sh
     - stage: deploy
       env:
         - DOCKER_EXPERIMENTAL_CLI=enabled
