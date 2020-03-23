@@ -151,7 +151,13 @@ fi
 # image registry org for publishing stack
 if [ -z "$IMAGE_REGISTRY_ORG" ]
 then
-    export IMAGE_REGISTRY_ORG=appsody
+    export IMAGE_REGISTRY_ORG=cameronmcwilliam
+fi
+
+# image registry org for publishing stack
+if [ -z "$TESTING_REGISTRY_ORG" ]
+then
+    export TESTING_REGISTRY_ORG=cameronmcwilliamtest
 fi
 
 # image registry for publishing stack

@@ -6,38 +6,56 @@ go:
 env:
   - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:latest
 
-os: linux
-dist: bionic
-arch:
-  - amd64
-  - ppc64le
+stages:
+  - build
+  - deploy
 
 services:
   - docker
 
-# Delete git repo setup from travis
-# and replace with git clone to master.
-# reset hard to $TRAVIS_COMMIT
-install:
-  - . ./ci/git_setup.sh
-
-before_script:
-  - ./ci/download_cli.sh
-
-script:
-  - . ./ci/build.sh
-
 # note before_deploy will run before each deploy provider
 before_deploy:
+  - ./ci/git_setup.sh
+  - ./ci/download_ci.sh
+  - ./ci/build.sh
+  - ./ci/push.sh
   - . ./ci/release.sh
 
-deploy:
-  provider: releases
-  skip_cleanup: true
-  api_key: $GITHUB_TOKEN
-  file: ci/release/*
-  file_glob: true
-  on:
-    tags: true
-    repo: appsody/stacks
-    branch: master
+
+jobs:
+  include:
+    - stage: build
+      os: linux
+      arch: amd64
+      dist: bionic
+      script: 
+        - ./ci/git_setup.sh
+        - ./ci/download_ci.sh
+        - ./ci/build.sh
+        - ./ci/push.sh
+      on:
+        tags: false
+    - stage: build
+      os: linux
+      arch: ppc64le
+      dist: bionic
+      script: 
+        - ./ci/git_setup.sh
+        - ./ci/download_ci.sh
+        - ./ci/build.sh
+        - ./ci/push.sh
+    - stage: deploy
+      env:
+        - DOCKER_EXPERIMENTAL_CLI=enabled
+      os: linux
+      arch: amd64
+      dist: bionic
+      provider: releases
+      skip_cleanup: true
+      api_key: $GITHUB_TOKEN
+      file: ci/release/*
+      file_glob: true
+      on:
+        tags: true
+        repo: CameronMcWilliam/stacks
+        branch: master
