@@ -34,15 +34,20 @@ jobs:
       script: 
         - . ./ci/build.sh
     - stage: deploy
-      env:
-        - DOCKER_EXPERIMENTAL_CLI=enabled
       os: linux
       arch: amd64
       dist: bionic
+      before_install:
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        - sudo apt-get update
+        - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
       install: . ./ci/git_setup.sh
       before_script: ./ci/download_cli.sh
       script: 
         - . ./ci/build.sh
+        - . ./ci/release.sh
+      before_deploy:
         - . ./ci/release.sh
       provider: releases
       skip_cleanup: true
@@ -51,5 +56,5 @@ jobs:
       file_glob: true
       on:
         tags: true
-        repo: CameronMcWilliam/stacks
+        repo: CameronMcwilliam/stacks
         branch: multiArch

@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export DOCKER_CLI_EXPERIMENTAL=enabled
 # setup environment
 . $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/env.sh
 
