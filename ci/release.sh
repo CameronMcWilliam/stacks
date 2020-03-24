@@ -30,7 +30,8 @@ then
         then
             docker manifest create $TESTING_REGISTRY_ORG/$line \
             $TESTING_REGISTRY_ORG/$line-amd64 \
-            $TESTING_REGISTRY_ORG/$line-ppc64le      
+            $TESTING_REGISTRY_ORG/$line-ppc64le
+            docker manifest push $TESTING_REGISTRY_ORG/$line      
         fi
     done < $build_dir/manifest_list
 fi
