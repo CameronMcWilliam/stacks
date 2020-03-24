@@ -6,6 +6,7 @@ then
     while read line
     do
         version="${line: -5}"
+        regex='^[0-9]+\.[0-9]+\.[0-9]'
         if [[ $line != "" ]] && [[ ! $line =~ "index" ]] && [[ $line =~ ":" ]] && [[ $version =~ $regex ]] 
         then
             newImage="$line-$TRAVIS_CPU_ARCH"
