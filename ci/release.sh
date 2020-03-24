@@ -22,15 +22,17 @@ done
 
 image_registry_login
 
-if [ -f $build_dir/image_list ]
+if [ -f $build_dir/manifest_list ]
 then
     while read line
     do
         if [ "$line" != "" ]
         then
-            image_push $line
+            docker manifest create $TESTING_REGISTRY_ORG/$line \
+            $TESTING_REGISTRY_ORG/$line-amd64 \
+            $TESTING_REGISTRY_ORG/$line-ppc64le      
         fi
-    done < $build_dir/image_list
+    done < $build_dir/manifest_list
 fi
 
 # expose an extension point for running after main 'release' processing

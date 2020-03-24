@@ -44,4 +44,4 @@ jobs:
       on:
         tags: true
         repo: CameronMcWilliam/stacks
-        branch: master
+        branch: multiArch
