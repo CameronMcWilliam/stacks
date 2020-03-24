@@ -17,6 +17,16 @@ jobs:
   include:
     - stage: build
       os: linux
+      arch: amd64
+      dist: bionic
+      install: . ./ci/git_setup.sh
+      before_script: ./ci/download_cli.sh
+      script: 
+        - . ./ci/build.sh
+      on:
+        tags: false
+    - stage: build
+      os: linux
       arch: ppc64le
       dist: bionic
       install: . ./ci/git_setup.sh
