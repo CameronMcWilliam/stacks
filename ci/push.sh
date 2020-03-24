@@ -10,7 +10,7 @@ then
         then
         version="${line: -5}"
         regex='^[0-9]+\.[0-9]+\.[0-9]'
-        stack=$(echo $line | awk -F"[/]" '{print $2}')
+        stack=$(echo $line | awk -F"[/]" '{print $3}')
             if  [[ ! $line =~ "index" ]] && [[ $version =~ $regex ]] && [[ ! ${stacks[*]} =~ "$stack" ]]
             then
                 newImage="$line-$TRAVIS_CPU_ARCH"
