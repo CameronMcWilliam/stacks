@@ -16,6 +16,7 @@ services:
 jobs:
   include:
     - stage: build
+      if: tag IS blank
       os: linux
       arch: amd64
       dist: bionic
@@ -23,8 +24,6 @@ jobs:
       before_script: ./ci/download_cli.sh
       script: 
         - . ./ci/build.sh
-      on:
-        tags: false
     - stage: build
       os: linux
       arch: ppc64le
@@ -34,6 +33,7 @@ jobs:
       script: 
         - . ./ci/build.sh
     - stage: deploy
+      if: tag IS present
       os: linux
       arch: amd64
       dist: bionic

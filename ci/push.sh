@@ -23,3 +23,4 @@ then
     done < $build_dir/image_list
 fi
 { [ "${#stacks[@]}" -eq 0 ] || printf '%s\n' "${stacks[@]}"; } > $build_dir/manifest_list
+cat manifest_list
