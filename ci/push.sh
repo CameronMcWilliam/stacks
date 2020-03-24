@@ -11,8 +11,6 @@ then
             image_tag $line $newImage
             docker rmi $line
             image_push $newImage
-            line=`echo $line | sed -e "s/$line/$newImage/"`
         fi
     done < $build_dir/image_list
-    cat $build_dir/image_list
 fi
