@@ -13,9 +13,6 @@ stages:
 services:
   - docker
 
-before_deploy:
-  - . ./ci/release.sh
-
 jobs:
   include:
     - stage: build
@@ -36,6 +33,8 @@ jobs:
       before_script: ./ci/download_cli.sh
       script: 
         - . ./ci/build.sh
+      before_deploy:
+        - . ./ci/release.sh
       provider: releases
       skip_cleanup: true
       api_key: $GITHUB_TOKEN

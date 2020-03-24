@@ -28,10 +28,10 @@ then
     do
         if [ "$line" != "" ]
         then
-            docker manifest create $TESTING_REGISTRY_ORG/$line \
+            docker manifest create $IMAGE_REGISTRY_ORG/$line \
             $TESTING_REGISTRY_ORG/$line-amd64 \
             $TESTING_REGISTRY_ORG/$line-ppc64le
-            docker manifest push $TESTING_REGISTRY_ORG/$line      
+            docker manifest push $IMAGE_REGISTRY_ORG/$line      
         fi
     done < $build_dir/manifest_list
 fi
