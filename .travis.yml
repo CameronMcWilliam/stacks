@@ -3,9 +3,6 @@ language: generic
 go:
   - 1.12.x
 
-env:
-  - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:latest
-
 stages:
   - build
   - deploy
@@ -46,8 +43,6 @@ jobs:
       before_script: ./ci/download_cli.sh
       script: 
         - . ./ci/build.sh
-        - . ./ci/release.sh
-      before_deploy:
         - . ./ci/release.sh
       provider: releases
       skip_cleanup: true
