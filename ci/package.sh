@@ -41,9 +41,9 @@ do
                 stack_version_minor=`echo $stack_version | cut -d. -f2`
                 stack_version_patch=`echo $stack_version | cut -d. -f3`
                 architectures=$(yq r $stack 'architectures[*].arch')
-                arch_array=$(echo $architectures)
-                if [[ ${#arch_array[@]} != 0 ]]
+                if [[ $architectures != "" ]]
                 then
+                    arch_array=$(echo $architectures)
                     echo "Building for: ${arch_array}"
                     if [[ ! $architectures =~ $TRAVIS_CPU_ARCH ]]
                     then
