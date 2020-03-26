@@ -40,7 +40,6 @@ do
                 stack_version_major=`echo $stack_version | cut -d. -f1`
                 stack_version_minor=`echo $stack_version | cut -d. -f2`
                 stack_version_patch=`echo $stack_version | cut -d. -f3`
-                echo "STACKYAML I THINK: ${stack}"
                 architectures=$(yq r $stack 'architectures[*].arch')
                 arch_array=$(echo $architectures)
                 echo "Building for: ${arch_array}"
