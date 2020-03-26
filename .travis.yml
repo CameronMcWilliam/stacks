@@ -3,12 +3,6 @@ language: generic
 go:
   - 1.12.x
 
-os: linux
-dist: bionic
-arch:
-  - amd64
-  - ppc64le
-
 env:
   - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:latest
 
@@ -22,16 +16,45 @@ services:
 jobs:
   include:
     - stage: build
-      env:
-        - TRAVIS_STAGE=build
+      os: linux
+      arch: amd64
+      dist: bionic
+      install: . ./ci/git_setup.sh
+      before_script: ./ci/download_cli.sh
+      script: 
+        - . ./ci/build.sh
+    - stage: build
+      os: linux
+      arch: ppc64le
+      dist: bionic
       install: . ./ci/git_setup.sh
       before_script: ./ci/download_cli.sh
       script: 
         - . ./ci/build.sh
     - stage: deploy
       if: tag IS present
-      env:
-        - TRAVIS_STAGE=deploy
+      os: linux
+      arch: amd64
+      dist: bionic
+      install: . ./ci/git_setup.sh
+      before_script: ./ci/download_cli.sh
+      script:
+        - . ./ci/build.sh
+        - . ./ci/release.sh
+      provider: releases
+      skip_cleanup: true
+      api_key: $GITHUB_TOKEN
+      file: ci/release/*
+      file_glob: true
+      on:
+        tags: true
+        repo: CameronMcwilliam/stacks
+        branch: multiArch
+    - stage: deploy
+      if: tag IS present
+      os: linux
+      arch: ppc64le
+      dist: bionic
       install: . ./ci/git_setup.sh
       before_script: ./ci/download_cli.sh
       script:
