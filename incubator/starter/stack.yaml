@@ -8,4 +8,6 @@ maintainers:
     email: henry.nash@uk.ibm.com
     github-id: henrynash
 default-template: simple
-architectures: linux/amd64,linux/ppc64le
+architectures:
+  - amd64
+  - ppc64le

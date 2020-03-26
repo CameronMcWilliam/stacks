@@ -1,7 +1,7 @@
 #!/bin/bash
 export IMAGE_REGISTRY_PUBLISH=true
 image_registry_login
-if [ -f $build_dir/image_list ]
+if [ -f $build_dir/stack_image_list ]
 then
     declare -a stacks
     while read line
@@ -11,7 +11,7 @@ then
         version="${line: -5}"
         regex='^[0-9]+\.[0-9]+\.[0-9]'
         stack=$(echo $line | awk -F"[/]" '{print $3}')
-            if  [[ ! $line =~ "index" ]] && [[ $version =~ $regex ]] && [[ ! ${stacks[*]} =~ "$stack" ]]
+            if [[ $version =~ $regex ]] && [[ ! ${stacks[*]} =~ "$stack" ]]
             then
                 newImage="$line-$TRAVIS_CPU_ARCH"
                 image_tag $line $newImage
@@ -20,7 +20,6 @@ then
                 stacks=( "${stacks[@]}" "$stack" )
             fi
         fi
-    done < $build_dir/image_list
+    done < $build_dir/stack_image_list
 fi
 { [ "${#stacks[@]}" -eq 0 ] || printf '%s\n' "${stacks[@]}"; } > $build_dir/manifest_list
-cat $build_dir/manifest_list

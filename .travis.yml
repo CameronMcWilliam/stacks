@@ -3,6 +3,12 @@ language: generic
 go:
   - 1.12.x
 
+os: linux
+dist: bionic
+arch:
+  - amd64
+  - ppc64le
+
 env:
   - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:latest
 
@@ -16,35 +22,19 @@ services:
 jobs:
   include:
     - stage: build
-      if: tag IS blank
-      os: linux
-      arch: amd64
-      dist: bionic
-      install: . ./ci/git_setup.sh
-      before_script: ./ci/download_cli.sh
-      script: 
-        - . ./ci/build.sh
-    - stage: build
-      os: linux
-      arch: ppc64le
-      dist: bionic
+      env:
+        - TRAVIS_STAGE=build
       install: . ./ci/git_setup.sh
       before_script: ./ci/download_cli.sh
       script: 
         - . ./ci/build.sh
     - stage: deploy
       if: tag IS present
-      os: linux
-      arch: amd64
-      dist: bionic
-      before_install:
-        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-        - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        - sudo apt-get update
-        - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+      env:
+        - TRAVIS_STAGE=deploy
       install: . ./ci/git_setup.sh
       before_script: ./ci/download_cli.sh
-      script: 
+      script:
         - . ./ci/build.sh
         - . ./ci/release.sh
       provider: releases

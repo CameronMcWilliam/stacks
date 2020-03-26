@@ -35,13 +35,13 @@ do
             if [ -d $stack_dir ]
             then
                 pushd $stack_dir
-
                 stack_id=$(basename $stack_dir)
                 stack_version=$(awk '/^version *:/ { gsub("version:","",$NF); gsub("\"","",$NF); print $NF}' $stack)
                 stack_version_major=`echo $stack_version | cut -d. -f1`
                 stack_version_minor=`echo $stack_version | cut -d. -f2`
                 stack_version_patch=`echo $stack_version | cut -d. -f3`
-
+                $architectures=$(yq r $stack architectures)
+                yq w $build_dir/arch_list.yaml $stack_id $architectures
                 # check if the stack needs to be built
                 rebuild_local=false
                 for repo_stack in $STACKS_LIST
@@ -99,10 +99,10 @@ do
                         exit 1
                     fi
 
-                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id" >> $build_dir/image_list
-                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version" >> $build_dir/image_list
-                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version_major" >> $build_dir/image_list
-                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version_major.$stack_version_minor" >> $build_dir/image_list
+                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id" >> $build_dir/stack_image_list
+                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version" >> $build_dir/stack_image_list
+                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version_major" >> $build_dir/stack_image_list
+                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version_major.$stack_version_minor" >> $build_dir/stack_image_list
 
                     echo -e "\n- ADD $repo_name with release URL prefix $RELEASE_URL/$stack_id-v$stack_version/$repo_name."
                     if appsody stack add-to-repo $repo_name \

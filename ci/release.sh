@@ -22,16 +22,31 @@ done
 
 image_registry_login
 
+if [ -f $build_dir/image_list ]
+then
+    while read line
+    do
+        if [ "$line" != "" ]
+        then
+            image_push $line
+        fi
+    done < $build_dir/image_list
+fi
+
 if [ -f $build_dir/manifest_list ]
 then
     while read line
     do
         if [ "$line" != "" ]
         then
-            docker manifest create $IMAGE_REGISTRY_ORG/$line \
-            $TESTING_REGISTRY_ORG/$line-amd64 \
-            $TESTING_REGISTRY_ORG/$line-ppc64le
-            docker manifest push $IMAGE_REGISTRY_ORG/$line      
+            stack=$(echo $line | awk -F"[:]" '{print $1}')
+            if [ -f $build_dir/arch_list ]
+            then
+                docker manifest create $IMAGE_REGISTRY_ORG/$line \
+                $TESTING_REGISTRY_ORG/$line-amd64 \
+                $TESTING_REGISTRY_ORG/$line-ppc64le
+                docker manifest push $IMAGE_REGISTRY_ORG/$line
+            fi      
         fi
     done < $build_dir/manifest_list
 fi

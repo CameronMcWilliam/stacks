@@ -38,6 +38,11 @@ then
     echo " cli_deb=${cli_deb}"
     echo " cli_dist=${cli_dist}"
 
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=${TRAVIS_CPU_ARCH}] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    sudo apt-get update
+    sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+
     curl -LJO $cli_dist
     mkdir ./appsody-install
     tar zxvf "$cli_deb" --directory ./appsody-install
