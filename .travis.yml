@@ -18,6 +18,7 @@ jobs:
     - stage: build
       env:
         - TRAVIS_STAGE=build
+        - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:latest
       os: linux
       arch: amd64
       dist: bionic
@@ -28,6 +29,7 @@ jobs:
     - stage: build
       env:
         - TRAVIS_STAGE=build
+        - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:latest
       os: linux
       arch: ppc64le
       dist: bionic
@@ -38,6 +40,7 @@ jobs:
     - stage: deploy
       env:
         - TRAVIS_STAGE=deploy
+        - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:latest
       if: tag IS present
       os: linux
       arch: amd64
@@ -59,6 +62,7 @@ jobs:
     - stage: deploy
       env:
         - TRAVIS_STAGE=deploy
+        - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:latest
       if: tag IS present
       os: linux
       arch: ppc64le
