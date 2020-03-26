@@ -40,9 +40,13 @@ do
                 stack_version_major=`echo $stack_version | cut -d. -f1`
                 stack_version_minor=`echo $stack_version | cut -d. -f2`
                 stack_version_patch=`echo $stack_version | cut -d. -f3`
-                architectures=$(yq r $stack --collect architectures)
+                echo "STACKYAML I THINK: ${stack}"
+                architectures=$(yq r $stack 'architectures[*].arch')
+                arch_array=$(echo $architectures)
+                echo "Building for: ${arch_array}"
                 if [[ ! $architectures =~ $TRAVIS_CPU_ARCH ]]
                 then
+                    echo "${TRAVIS_CPU_ARCH} not found in ${arch_array}, skipping package..."
                     break
                 fi
                 # check if the stack needs to be built
@@ -103,8 +107,6 @@ do
                     fi
 
                     echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version" >> $build_dir/stack_image_list
-                    architectures=$(yq r $stack 'architectures[*].arch')
-                    arch_array=$(echo $architectures)
                     echo "STACK:${stack_id}:$stack_version" >> $build_dir/manifest_list
                     echo "ARCHS:$arch_array" >> $build_dir/manifest_list
                     cat $build_dir/manifest_list
