@@ -40,13 +40,16 @@ do
                 stack_version_major=`echo $stack_version | cut -d. -f1`
                 stack_version_minor=`echo $stack_version | cut -d. -f2`
                 stack_version_patch=`echo $stack_version | cut -d. -f3`
-                $architectures=$(yq r $stack architectures)
-                yq w $build_dir/arch_list.yaml $stack_id $architectures
+                architectures=$(yq r $stack --collect architectures)
+                if [[ ! $architectures =~ $TRAVIS_CPU_ARCH ]]
+                then
+                    exit
+                fi
                 # check if the stack needs to be built
                 rebuild_local=false
                 for repo_stack in $STACKS_LIST
                 do
-                    if [ $repo_stack = $repo_name/$stack_id ]
+                    if [ $repo_stack = $repo_name/$stack_id ] && [ $TRAVIS_CPU_ARCH ~= "$architectures" ]
                     then
                         rebuild_local=true
                     fi

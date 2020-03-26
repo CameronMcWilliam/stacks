@@ -16,6 +16,8 @@ services:
 jobs:
   include:
     - stage: build
+      env:
+        - TRAVIS_STAGE=build
       os: linux
       arch: amd64
       dist: bionic
@@ -24,6 +26,8 @@ jobs:
       script: 
         - . ./ci/build.sh
     - stage: build
+      env:
+        - TRAVIS_STAGE=build
       os: linux
       arch: ppc64le
       dist: bionic
@@ -32,6 +36,8 @@ jobs:
       script: 
         - . ./ci/build.sh
     - stage: deploy
+      env:
+        - TRAVIS_STAGE=deploy
       if: tag IS present
       os: linux
       arch: amd64
@@ -51,6 +57,8 @@ jobs:
         repo: CameronMcwilliam/stacks
         branch: multiArch
     - stage: deploy
+      env:
+        - TRAVIS_STAGE=deploy
       if: tag IS present
       os: linux
       arch: ppc64le
