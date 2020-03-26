@@ -42,11 +42,16 @@ do
                 stack_version_patch=`echo $stack_version | cut -d. -f3`
                 architectures=$(yq r $stack 'architectures[*].arch')
                 arch_array=$(echo $architectures)
-                echo "Building for: ${arch_array}"
-                if [[ ! $architectures =~ $TRAVIS_CPU_ARCH ]]
+                if [[ ${#arch_array[@]} != 0 ]]
                 then
-                    echo "${TRAVIS_CPU_ARCH} not found in ${arch_array}, skipping build..."
-                    break
+                    echo "Building for: ${arch_array}"
+                    if [[ ! $architectures =~ $TRAVIS_CPU_ARCH ]]
+                    then
+                        echo "${TRAVIS_CPU_ARCH} not found in ${arch_array}. Skipping build..."
+                        break
+                    fi
+                else 
+                arch_array=("amd64")
                 fi
                 # check if the stack needs to be built
                 rebuild_local=false
