@@ -46,7 +46,7 @@ do
                 echo "Building for: ${arch_array}"
                 if [[ ! $architectures =~ $TRAVIS_CPU_ARCH ]]
                 then
-                    echo "${TRAVIS_CPU_ARCH} not found in ${arch_array}, skipping package..."
+                    echo "${TRAVIS_CPU_ARCH} not found in ${arch_array}, skipping build..."
                     break
                 fi
                 # check if the stack needs to be built

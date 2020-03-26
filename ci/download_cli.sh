@@ -43,9 +43,7 @@ then
     sudo apt-get update
     sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 
-    sudo add-apt-repository ppa:rmescandon/yq
-    sudo apt update
-    sudo apt install yq -y
+    sudo snap install yq
 
     curl -LJO $cli_dist
     mkdir ./appsody-install
