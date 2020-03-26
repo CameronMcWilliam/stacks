@@ -43,13 +43,13 @@ do
                 architectures=$(yq r $stack --collect architectures)
                 if [[ ! $architectures =~ $TRAVIS_CPU_ARCH ]]
                 then
-                    exit
+                    break
                 fi
                 # check if the stack needs to be built
                 rebuild_local=false
                 for repo_stack in $STACKS_LIST
                 do
-                    if [ $repo_stack = $repo_name/$stack_id ] && [ $TRAVIS_CPU_ARCH ~= "$architectures" ]
+                    if [ $repo_stack = $repo_name/$stack_id ]
                     then
                         rebuild_local=true
                     fi
@@ -102,11 +102,12 @@ do
                         exit 1
                     fi
 
-                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id" >> $build_dir/stack_image_list
                     echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version" >> $build_dir/stack_image_list
-                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version_major" >> $build_dir/stack_image_list
-                    echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version_major.$stack_version_minor" >> $build_dir/stack_image_list
-
+                    architectures=$(yq r $stack 'architectures[*].arch')
+                    arch_array=$(echo $architectures)
+                    echo "STACK:${stack_id}:$stack_version" >> $build_dir/manifest_list
+                    echo "ARCHS:$arch_array" >> $build_dir/manifest_list
+                    cat $build_dir/manifest_list
                     echo -e "\n- ADD $repo_name with release URL prefix $RELEASE_URL/$stack_id-v$stack_version/$repo_name."
                     if appsody stack add-to-repo $repo_name \
                         --release-url $RELEASE_URL/$stack_id-v$stack_version/$repo_name. \

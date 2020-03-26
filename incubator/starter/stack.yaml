@@ -9,5 +9,5 @@ maintainers:
     github-id: henrynash
 default-template: simple
 architectures:
-  - amd64
-  - ppc64le
+  - arch: amd64
+  - arch: ppc64le

@@ -22,4 +22,3 @@ then
         fi
     done < $build_dir/stack_image_list
 fi
-{ [ "${#stacks[@]}" -eq 0 ] || printf '%s\n' "${stacks[@]}"; } > $build_dir/manifest_list
