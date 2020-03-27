@@ -13,7 +13,7 @@ exec_hooks $script_dir/ext/pre_release.d
 if [[ $TRAVIS_CPU_ARCH != "amd64" ]]
 then
     export PRIMARY_ARCH="false"
-    exit 0
+    travis_terminate 0
 else
     export PRIMARY_ARCH="true"
 fi
