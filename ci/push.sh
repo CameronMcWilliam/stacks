@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 export IMAGE_REGISTRY_PUBLISH=true
 image_registry_login
 if [ -f $build_dir/stack_image_list ]

@@ -53,6 +53,7 @@ jobs:
       file: ci/release/*
       file_glob: true
       on:
+        condition: "$PRIMARY_ARCH = true"
         tags: true
         repo: CameronMcwilliam/stacks
         branch: multiArch
@@ -75,6 +76,7 @@ jobs:
       file: ci/release/*
       file_glob: true
       on:
+        condition: "$PRIMARY_ARCH = true"
         tags: true
         repo: CameronMcwilliam/stacks
         branch: multiArch
