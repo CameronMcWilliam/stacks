@@ -68,7 +68,7 @@ jobs:
       before_script: ./ci/download_cli.sh
       script:
         - . ./ci/build.sh
-        - ./ci/release.sh
+        - . ./ci/release.sh
       provider: releases
       skip_cleanup: true
       api_key: $GITHUB_TOKEN
