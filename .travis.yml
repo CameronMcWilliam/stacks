@@ -3,9 +3,6 @@ language: generic
 go:
   - 1.12.x
 
-env:
-  - APPSODY_CONTROLLER_IMAGE=cameronmcwilliam/init-controller:latest
-
 stages:
   - build
   - deploy
