@@ -10,6 +10,11 @@ mkdir -p $release_dir
 # expose an extension point for running before main 'release' processing
 exec_hooks $script_dir/ext/pre_release.d
 
+if [[ $TRAVIS_CPU_ARCH != "amd64" ]]
+then
+    travis_terminate 0
+fi
+
 # iterate over each asset
 for asset in $assets_dir/*
 do
