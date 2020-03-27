@@ -71,9 +71,7 @@ jobs:
       before_script: ./ci/download_cli.sh
       script:
         - . ./ci/build.sh
-        - pwd
-        - ls -la ./ci/
-        - . ./ci/release.sh
+        - . $script_dir/release.sh
       provider: releases
       skip_cleanup: true
       api_key: $GITHUB_TOKEN
