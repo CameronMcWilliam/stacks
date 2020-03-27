@@ -43,24 +43,29 @@ do
                 architectures=$(yq r $stack 'architectures[*].arch')
                 if [[ $architectures != "" ]]
                 then
-                    arch_array=$(echo $architectures)
-                    arch_list=($arch_array)
-                    echo "Building for: ${arch_array}"
+                    arch_list=$(echo $architectures)
+                    arch_array=($arch_list)
+                    echo "Building for: ${arch_list}"
                     if [[ ! $architectures =~ $TRAVIS_CPU_ARCH ]]
                     then
-                        echo "${TRAVIS_CPU_ARCH} not found in ${arch_array}. Skipping build..."
+                        echo "${TRAVIS_CPU_ARCH} not found in ${arch_list}. Skipping build..."
                         continue
-                    elif [[ $TRAVIS_TAG != "" ]] && [[ $TRAVIS_STAGE == "build" ]] && [[ ${arch_list[0]} == $TRAVIS_CPU_ARCH ]]
+                    elif [[ $TRAVIS_TAG != "" ]] && [[ $TRAVIS_STAGE == "build" ]] && [[ ${arch_array[0]} == $TRAVIS_CPU_ARCH ]]
                     then
-                        echo "${TRAVIS_CPU_ARCH} primary architecture in ${arch_array}. Skipping build stage..."
+                        echo "${TRAVIS_CPU_ARCH} primary architecture in ${arch_list}. Skipping build stage..."
                         continue
-                    elif [[ $TRAVIS_TAG != "" ]] && [[ $TRAVIS_STAGE == "deploy" ]] && [[ ${arch_list[0]} != $TRAVIS_CPU_ARCH ]]
+                    elif [[ $TRAVIS_TAG != "" ]] && [[ $TRAVIS_STAGE == "deploy" ]] && [[ ${arch_array[0]} != $TRAVIS_CPU_ARCH ]]
                     then
-                        echo "${TRAVIS_CPU_ARCH} secondy architecture in ${arch_array}. Skipping deploy stage..."
+                        echo "${TRAVIS_CPU_ARCH} secondy architecture in ${arch_list}. Skipping deploy stage..."
                         continue
                     fi
                 else 
                 arch_array=("amd64")
+                fi
+                if [[ ! $arch_array =~ $TRAVIS_CPU_ARCH ]]
+                then
+                    echo "${TRAVIS_CPU_ARCH} not found in ${arch_list}. Skipping build..."
+                    continue
                 fi
                 # check if the stack needs to be built
                 rebuild_local=false
@@ -121,7 +126,7 @@ do
 
                     echo "$IMAGE_REGISTRY/$TESTING_REGISTRY_ORG/$stack_id:$stack_version" >> $build_dir/stack_image_list
                     echo "STACK:${stack_id}:$stack_version" >> $build_dir/manifest_list
-                    echo "ARCHS:$arch_array" >> $build_dir/manifest_list
+                    echo "ARCHS:$arch_list" >> $build_dir/manifest_list
                     cat $build_dir/manifest_list
                     echo -e "\n- ADD $repo_name with release URL prefix $RELEASE_URL/$stack_id-v$stack_version/$repo_name."
                     if appsody stack add-to-repo $repo_name \
