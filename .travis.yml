@@ -46,8 +46,8 @@ jobs:
       before_script: ./ci/download_cli.sh
       script:
         - . ./ci/build.sh
-        - ls -la ./ci/
         - pwd
+        - ls -la ./ci/
         - . ./ci/release.sh
       provider: releases
       skip_cleanup: true
@@ -71,8 +71,8 @@ jobs:
       before_script: ./ci/download_cli.sh
       script:
         - . ./ci/build.sh
-        - ls -la ./ci/
         - pwd
+        - ls -la ./ci/
         - . ./ci/release.sh
       provider: releases
       skip_cleanup: true
