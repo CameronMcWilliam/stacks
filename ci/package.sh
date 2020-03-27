@@ -59,14 +59,20 @@ do
                         echo "${TRAVIS_CPU_ARCH} secondy architecture in ${arch_list}. Skipping deploy stage..."
                         continue
                     fi
-                else 
-                arch_array=("amd64")
+                else
+                    architectures="amd64"
+                    arch_list=$(echo $architectures)
+                    if [[ ! $arch_list =~ $TRAVIS_CPU_ARCH ]]
+                    then
+                        echo "${TRAVIS_CPU_ARCH} not found in ${arch_list}. Skipping build..."
+                        continue
+                    elif [[ $TRAVIS_TAG != "" ]] && [[ $TRAVIS_STAGE == "build" ]]
+                    then
+                        echo "${TRAVIS_CPU_ARCH} primary architecture in ${arch_list}. Skipping build stage..."
+                        continue
+                    fi
                 fi
-                if [[ ! $arch_array =~ $TRAVIS_CPU_ARCH ]]
-                then
-                    echo "${TRAVIS_CPU_ARCH} not found in ${arch_list}. Skipping build..."
-                    continue
-                fi
+                
                 # check if the stack needs to be built
                 rebuild_local=false
                 for repo_stack in $STACKS_LIST
