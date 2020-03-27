@@ -56,52 +56,52 @@ then
             arch_array=($archs)
             if [[ "${#arch_array[@]}" == 3 ]]
             then
-               docker manifest create ${IMAGE_REGISTRY_ORG}/$stack_full_version \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[0]} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[1]} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[2]} \
-               docker manifest push ${IMAGE_REGISTRY_ORG}/$stack_full_version
+               docker manifest create $IMAGE_REGISTRY_ORG/$stack_full_version \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[0]} \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[1]} \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[2]} \
+               docker manifest push $IMAGE_REGISTRY_ORG/$stack_full_version
 
-               docker manifest create ${IMAGE_REGISTRY_ORG}/${stack_major_minor} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[0]} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[1]} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[2]} \
-               docker manifest push ${IMAGE_REGISTRY_ORG}/${stack_major_minor}
+               docker manifest create $IMAGE_REGISTRY_ORG/$stack_major_minor \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[0]} \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[1]} \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[2]} \
+               docker manifest push $IMAGE_REGISTRY_ORG/$stack_major_minor
 
-               docker manifest create ${IMAGE_REGISTRY_ORG}/${stack_major} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[0]} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[1]} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[2]} \
-               docker manifest push ${IMAGE_REGISTRY_ORG}/${stack_major}
+               docker manifest create $IMAGE_REGISTRY_ORG/$stack_major \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[0]} \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[1]} \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[2]} \
+               docker manifest push $IMAGE_REGISTRY_ORG/$stack_major
             elif [[ "${#arch_array[@]}" == 2 ]]
             then
-               docker manifest create ${IMAGE_REGISTRY_ORG}/$stack_full_version \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[0]} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[1]}
-               docker manifest push ${IMAGE_REGISTRY_ORG}/$stack_full_version
+               docker manifest create $IMAGE_REGISTRY_ORG/$stack_full_version \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[0]} \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[1]}
+               docker manifest push $IMAGE_REGISTRY_ORG/$stack_full_version
 
-               docker manifest create ${IMAGE_REGISTRY_ORG}/${stack_major_minor} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[0]} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[1]} \
-               docker manifest push ${IMAGE_REGISTRY_ORG}/${stack_major_minor}
+               docker manifest create $IMAGE_REGISTRY_ORG/$stack_major_minor \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[0]} \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[1]} \
+               docker manifest push $IMAGE_REGISTRY_ORG/$stack_major_minor
 
-               docker manifest create ${IMAGE_REGISTRY_ORG}/${stack_major} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[0]} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[1]} \
-               docker manifest push ${IMAGE_REGISTRY_ORG}/${stack_major}
+               docker manifest create $IMAGE_REGISTRY_ORG/$stack_major \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[0]} \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[1]} \
+               docker manifest push $IMAGE_REGISTRY_ORG/$stack_major
             elif [[ "${#arch_array[@]}" == 1 ]]
             then
-               docker manifest create ${IMAGE_REGISTRY_ORG}/$stack_full_version \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[0]} \
-               docker manifest push ${IMAGE_REGISTRY_ORG}/$stack_full_version
+               docker manifest create $IMAGE_REGISTRY_ORG/$stack_full_version \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[0]} \
+               docker manifest push $IMAGE_REGISTRY_ORG/$stack_full_version
 
-               docker manifest create ${IMAGE_REGISTRY_ORG}/${stack_major_minor} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[0]} \
-               docker manifest push ${IMAGE_REGISTRY_ORG}/${stack_major_minor}
+               docker manifest create $IMAGE_REGISTRY_ORG/$stack_major_minor \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[0]} \
+               docker manifest push $IMAGE_REGISTRY_ORG/$stack_major_minor
 
-               docker manifest create ${IMAGE_REGISTRY_ORG}/${stack_major} \
-               ${TESTING_REGISTRY_ORG}/${stack_full_version}-${arch_array[0]} \
-               docker manifest push ${IMAGE_REGISTRY_ORG}/${stack_major}
+               docker manifest create $IMAGE_REGISTRY_ORG/$stack_major \
+               $TESTING_REGISTRY_ORG/$stack_full_version-${arch_array[0]} \
+               docker manifest push $IMAGE_REGISTRY_ORG/$stack_major
             fi
         fi
     done < $build_dir/manifest_list
