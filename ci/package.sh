@@ -50,11 +50,11 @@ do
                     then
                         echo "${TRAVIS_CPU_ARCH} not found in ${arch_array}. Skipping build..."
                         continue
-                    elif [[ $TRAVIS_TAG != "" ]] && [[ $TRAVIS_STAGE == "build" ]] && [[ ${arch_list[1]} == $TRAVIS_CPU_ARCH ]]
+                    elif [[ $TRAVIS_TAG != "" ]] && [[ $TRAVIS_STAGE == "build" ]] && [[ ${arch_list[0]} == $TRAVIS_CPU_ARCH ]]
                     then
                         echo "${TRAVIS_CPU_ARCH} primary architecture in ${arch_array}. Skipping build stage..."
                         continue
-                    elif [[ $TRAVIS_TAG != "" ]] && [[ $TRAVIS_STAGE == "deploy" ]] && [[ ${arch_list[1]} != $TRAVIS_CPU_ARCH ]]
+                    elif [[ $TRAVIS_TAG != "" ]] && [[ $TRAVIS_STAGE == "deploy" ]] && [[ ${arch_list[0]} != $TRAVIS_CPU_ARCH ]]
                     then
                         echo "${TRAVIS_CPU_ARCH} secondy architecture in ${arch_array}. Skipping deploy stage..."
                         continue
