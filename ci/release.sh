@@ -38,6 +38,8 @@ then
     done < $build_dir/image_list
 fi
 
+cat $build_dir/manifest_list
+
 if [ -f $build_dir/manifest_list ]
 then
     while read line
