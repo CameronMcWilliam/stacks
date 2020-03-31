@@ -8,3 +8,4 @@ maintainers:
     email: henry.nash@uk.ibm.com
     github-id: henrynash
 default-template: simple
+deprecated: [21/05/1999] - Stack deprercated
